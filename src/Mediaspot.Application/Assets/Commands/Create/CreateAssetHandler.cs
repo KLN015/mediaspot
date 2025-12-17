@@ -1,0 +1,24 @@
+﻿using Mediaspot.Application.Common;
+using Mediaspot.Application.Assets.Factories;
+using Mediaspot.Domain.Assets;
+using Mediaspot.Domain.Assets.ValueObjects;
+using MediatR;
+
+namespace Mediaspot.Application.Assets.Commands.Create;
+
+public sealed class CreateAssetHandler(IAssetRepository repo, IUnitOfWork uow)
+    : IRequestHandler<CreateAssetCommand, Guid>
+{
+    public async Task<Guid> Handle(CreateAssetCommand request, CancellationToken ct)
+    {
+        // Enforce uniqueness of ExternalId
+        var existing = await repo.GetByExternalIdAsync(request.ExternalId, ct);
+        if (existing is not null)
+            throw new InvalidOperationException($"Asset with ExternalId '{request.ExternalId}' already exists.");
+
+        var asset = AssetFactory.Create(request);
+        await repo.AddAsync(asset, ct);
+        await uow.SaveChangesAsync(ct);
+        return asset.Id;
+    }
+}
