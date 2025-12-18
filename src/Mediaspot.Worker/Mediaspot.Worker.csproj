@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Mediaspot.Application\Mediaspot.Application.csproj" />
     <ProjectReference Include="..\Mediaspot.Domain\Mediaspot.Domain.csproj" />
+    <ProjectReference Include="..\Mediaspot.Infrastructure\Mediaspot.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

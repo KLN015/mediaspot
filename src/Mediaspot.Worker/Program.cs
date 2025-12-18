@@ -1,5 +1,8 @@
 using Mediaspot.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using Mediaspot.Application.Common;
+using Mediaspot.Worker;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = Host.CreateApplicationBuilder(args);
 
