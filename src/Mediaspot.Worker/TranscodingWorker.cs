@@ -25,7 +25,7 @@ public sealed class TranscodingWorker(ITranscodeJobRepository repo, IUnitOfWork 
 
                     await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
 
-                    job.Complete();
+                    job.Succeed();
                     await uow.SaveChangesAsync(stoppingToken);
 
                     logger.LogInformation("Job {JobId} completed", job.Id);
