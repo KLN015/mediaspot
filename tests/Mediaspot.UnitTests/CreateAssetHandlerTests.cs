@@ -18,7 +18,7 @@ public class CreateAssetHandlerTests
         repo.Setup(r => r.AddAsync(It.IsAny<Asset>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
         uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
         var handler = new CreateAssetHandler(repo.Object, uow.Object);
-        var cmd = new CreateAssetCommand("ext-unique", "title", "desc", "en");
+        var cmd = new CreateAssetCommand(AssetType.Audio, "ext-unique", "title", "desc", "en", 808, 3233, 15, null, null, null);
 
         var id = await handler.Handle(cmd, CancellationToken.None);
 
@@ -32,9 +32,9 @@ public class CreateAssetHandlerTests
     {
         var repo = new Mock<IAssetRepository>();
         var uow = new Mock<IUnitOfWork>();
-        repo.Setup(r => r.GetByExternalIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Asset("ext-unique", new Metadata("t", null, null)));
+        repo.Setup(r => r.GetByExternalIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new AudioAsset("ext-unique", new Metadata("t", null, null), 808, 3233, 15));
         var handler = new CreateAssetHandler(repo.Object, uow.Object);
-        var cmd = new CreateAssetCommand("ext-unique", "title", "desc", "en");
+        var cmd = new CreateAssetCommand(AssetType.Audio, "ext-unique", "title", "desc", "en", 808, 3233, 15, null, null, null);
 
         await Should.ThrowAsync<InvalidOperationException>(() => handler.Handle(cmd, CancellationToken.None));
     }
